@@ -25,7 +25,7 @@ The primary outcome variable is the proportion of "pleasant" responses as a func
 
 ---
 
-## 🧠 Theoretical Background
+##  Theoretical Background
 
 Implicit attitudes are automatic evaluations that occur outside conscious awareness (Greenwald & Banaji, 1995).  
 
