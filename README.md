@@ -38,5 +38,5 @@ We test whether:
 
 ---
 
-## 🗂 Repository Structure
+##  Repository Structure
 TODO
