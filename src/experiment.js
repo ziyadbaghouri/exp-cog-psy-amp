@@ -93,6 +93,45 @@ const welcome = {
 
 timeline.push(welcome);
 
+const instructions = {
+  type: jsPsychHtmlButtonResponse,
+
+  stimulus: `
+  <video autoplay muted loop id="bg-video">
+    <source src="assets/background.mp4" type="video/mp4">
+  </video>
+
+  <div class="welcome-box">
+
+    <h1>Task Instructions</h1>
+
+    <p>Please read the instructions carefully before starting.</p>
+
+    <ul style="text-align:left; line-height:1.8; margin-top:20px;">
+
+      <li>You will see a series of <b>inkblots</b>.</li>
+
+      <li>You have to decide whether each inkblot looks 
+      <b style="color:#7CFF9E;">Pleasant</b> or 
+      <b style="color:#FF8A8A;">Unpleasant</b>.</li>
+
+      <li>Respond based on your <b>first impression</b>.</li>
+
+      <li>There are <b>no right or wrong answers</b>.</li>
+
+      <li>Respond naturally.</li>
+
+    </ul>
+
+  </div>
+  `,
+
+  choices: ["Begin"]
+};
+
+timeline.push(instructions);
+
+
 const questionnaire = {
   type: jsPsychSurveyHtmlForm,
 
