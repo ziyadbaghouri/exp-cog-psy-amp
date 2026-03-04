@@ -55,4 +55,76 @@ body, html {
   border-color: #ffffff;
 }
 
+/* QUESTIONNAIRE */
+.questionnaire {
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 40px;
+  max-width: 650px;
+  margin: 15vh auto;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.questionnaire h2 {
+  margin-top: 0;
+  font-size: 24px;
+  letter-spacing: 0.03em;
+}
+
+
+.questionnaire p {
+  margin: 16px 0 6px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.questionnaire input[type="number"] {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  color: white;
+  padding: 8px 12px;
+  font-size: 15px;
+  width: 100px;
+  margin-top: 6px;
+  font-family: Arial, sans-serif;
+}
+
+.questionnaire select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 6px;
+  color: white;
+  padding: 8px 12px;
+  font-size: 15px;
+  margin-top: 6px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+}
+
+.questionnaire select option {
+  background: #222;
+  color: white;
+}
+
+.questionnaire input[type="radio"] {
+  accent-color: white;
+  margin-right: 6px;
+}
+
+.questionnaire label {
+  display: inline-block;
+  margin: 4px 12px 4px 0;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.questionnaire input[type="number"]:focus,
+.questionnaire select:focus {
+  outline: none;
+  border-color: white;
+  background: rgba(255, 255, 255, 0.18);
+}
+
 
