@@ -1,0 +1,58 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* VIDEO BACKGROUND */
+
+#bg-video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+
+.welcome-box{
+  background:rgba(0,0,0,0.75);
+  color:white;
+  padding:40px;
+  max-width:650px;
+  margin:15vh auto;
+  border-radius:12px;
+  text-align:center;
+}
+
+.start-btn{
+  display:block;
+  margin:20px auto 0;
+  padding:12px 24px;
+
+  font-size:18px;
+  font-weight:600;
+
+  border:none;
+  border-radius:8px;
+
+  background:rgba(0,0,0,0.75);
+  color:white;
+
+  cursor:pointer;
+}
+
+.start-btn:disabled{
+  cursor:not-allowed;
+  opacity:0.5;
+}
+
+.start-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+}
+
+
