@@ -127,4 +127,32 @@ body, html {
   background: rgba(255, 255, 255, 0.18);
 }
 
+/* AMP stimulus container */
+.amp-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* fixation cross */
+.fixation-cross {
+  font-size: 120px;
+  color: white;
+}
+
+/* prime images */
+.prime-img {
+  max-width: 80vw;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+/* inkblot images */
+.inkblot-img {
+  max-width: 85vw;
+  max-height: 85vh;
+  object-fit: contain;
+}
+
 
