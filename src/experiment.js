@@ -1,8 +1,19 @@
 const jsPsych = initJsPsych({
   on_finish: function() {
 
-    // find the demographics trial
+    // Demographics
     const demo = jsPsych.data.get().filter({trial_type: "survey-html-form"}).values()[0];
+
+    const amp_responses = jsPsych.data.get().filter({trial_type: "html-button-response"})
+      .values()
+      .filter(t => t.prime_category !== undefined && t.prime_image !== undefined);
+
+    const image_columns = {};
+    for (const trial of amp_responses) {
+      const key = trial.prime_image;          
+      const value = trial.response === 0 ? "P" : "U";  // 0 = Pleasant, 1 = Unpleasant
+      image_columns[key] = value;
+    }
 
     const payload = {
       participant_id: participant_id,
@@ -11,18 +22,17 @@ const jsPsych = initJsPsych({
       wolf_attitude: demo.response.att_wolf,
       dog_attitude: demo.response.att_dog,
       fox_attitude: demo.response.att_fox,
-      dog_owner: demo.response.dog_owner
+      dog_owner: demo.response.dog_owner,
+      ...image_columns   
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbyIdq-wELknYlD2KQ1Uy-IVz4y8vHzXBPTWqYN9PPC4SvN__xxDabq9MSqQXzUQyJWm/exec", {
+    // cacher le token sur git secret mais vzy flemme 
+    fetch("https://script.google.com/macros/s/AKfycbzTdvxPABMPYrvuQkfs7SuRc7fJxwUqWuDaIQ7gN4fSiSASGJyEj4lGr7kxcLFHsTg/exec", {
       method: "POST",
       mode: "no-cors",
-      headers: {
-        "Content-Type": "text/plain"
-      },
+      headers: { "Content-Type": "text/plain" },
       body: JSON.stringify(payload)
     });
-
   }
 });
 
@@ -31,8 +41,7 @@ jsPsych.data.addProperties({ participant_id: participant_id });
 
 let timeline = [];
 
-// ── Build image list ──────────────────────────────────────────────────────────
-
+// Build image list 
 const images_to_preload = [];
 
 for (let i = 1; i <= 30; i++) {
@@ -42,9 +51,7 @@ for (let i = 1; i <= 30; i++) {
   images_to_preload.push(`assets/inkblot/inkblot_${String(i).padStart(2,'0')}.png`);
 }
 
-// ── Preload plugin (waits until all images are loaded before continuing) ──────
-
-// Verify the array contains only strings before preloading
+//Preload 
 const safe_images = images_to_preload.filter(p => typeof p === 'string');
 
 const preload = {
@@ -58,7 +65,7 @@ const preload = {
 
 timeline.push(preload);
 
-// ── Welcome ───────────────────────────────────────────────────────────────────
+//Welcome
 
 const welcome = {
   type: jsPsychHtmlButtonResponse,
@@ -116,7 +123,7 @@ const welcome = {
 
 timeline.push(welcome);
 
-// ── Instructions ──────────────────────────────────────────────────────────────
+//Instructions
 
 const instructions = {
   type: jsPsychHtmlButtonResponse,
@@ -150,8 +157,7 @@ const instructions = {
 
 timeline.push(instructions);
 
-// ── Trial components ──────────────────────────────────────────────────────────
-
+// Les screens du trial (a varifier ac la team leur duree)
 const fixation = {
   type: jsPsychHtmlKeyboardResponse,
   stimulus: `
@@ -205,17 +211,11 @@ const inkblot = {
   trial_duration: 150
 };
 
+// Response of the participant
 const response = {
   type: jsPsychHtmlButtonResponse,
 
-  stimulus: `
-  <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:55vh; gap:20px;">
-    <div style="width:200px; height:200px; background:#1a1a2e; border-radius:12px; display:flex; align-items:center; justify-content:center;">
-      <div style="width:130px; height:130px; background:#2a2a4a; border-radius:50%; opacity:0.7;"></div>
-    </div>
-    <p style="font-size:22px; margin:0; color:#eee;">How does the inkblot feel?</p>
-  </div>
-  `,
+  stimulus: `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;"></div>`,
 
   choices: ["Pleasant", "Unpleasant"],
 
@@ -223,7 +223,12 @@ const response = {
     `<button style="font-size:18px; padding:14px 36px; border-radius:10px; border:none; cursor:pointer; background:${i === 0 ? '#2ecc71' : '#e74c3c'}; color:white; font-weight:bold; margin:0 12px;">${choice}</button>`,
 
   data: {
-    prime_category: jsPsych.timelineVariable('category')
+    prime_category: jsPsych.timelineVariable('category'),
+    // Extract just the filename to record in the sheet
+    prime_image: () => {
+      const path = jsPsych.evaluateTimelineVariable('prime');
+      return path.replace(/^.*\//, '').replace('.png', ''); // "Chien1.3"
+    }
   }
 };
 
@@ -238,7 +243,7 @@ const amp_trial = {
   ]
 };
 
-// ── Build & shuffle stimuli ───────────────────────────────────────────────────
+// build and shuffle
 
 const stimuli = [];
 
@@ -271,17 +276,17 @@ timeline.push({
   timeline_variables: shuffled_trials
 });
 
-// ── Break ─────────────────────────────────────────────────────────────────────
+// BREAK SCREEN a voir ac la team si on le laisse ou ps
 
-const break_screen = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: "<h2>You may take a short break.</h2>",
-  choices: ["Continue"]
-};
+// const break_screen = {
+//   type: jsPsychHtmlButtonResponse,
+//   stimulus: "<h2>You may take a short break.</h2>",
+//   choices: ["Continue"]
+// };
 
 timeline.push(break_screen);
 
-// ── Questionnaire ─────────────────────────────────────────────────────────────
+//Questionnaire 
 
 const questionnaire = {
   type: jsPsychSurveyHtmlForm,
@@ -359,11 +364,12 @@ const questionnaire = {
   </div>
   `,
 
-  button_label: "Continue"
+  button_label: "Finish"
 };
 
 timeline.push(questionnaire);
 
-// ── Run ───────────────────────────────────────────────────────────────────────
+// Maybe add a final thank you screen here?
+//Run
 
 jsPsych.run(timeline);
