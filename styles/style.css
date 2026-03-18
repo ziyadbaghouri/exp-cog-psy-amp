@@ -28,6 +28,10 @@ body, html {
   text-align:center;
 }
 
+.welcome-box p {
+  text-align: left;    /* only paragraphs go left */
+}
+
 .start-btn{
   display:block;
   margin:20px auto 0;
@@ -137,6 +141,12 @@ body, html {
 
 /* fixation cross */
 .fixation-cross {
+  font-size: 120px;
+  color: black;
+}
+
+/* fixation cross */
+.mask-image {
   font-size: 120px;
   color: black;
 }
