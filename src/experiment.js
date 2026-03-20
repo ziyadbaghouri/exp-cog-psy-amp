@@ -392,7 +392,7 @@ const amp_trial = {
 //  Build stimuli
 // ─────────────────────────────────────────────
 const stimuli = [];
-for (let i = 1; i <= 1; i++) {
+for (let i = 1; i <= 30; i++) {
   stimuli.push({
     prime: `assets/Chien/Chien1.${i}.png`,
     category: "dog",
