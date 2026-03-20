@@ -36,7 +36,3 @@ We test whether:
 - Wolf primes → lowest pleasant responses
 - Fox primes → intermediate responses
 
----
-
-##  Repository Structure
-TODO

@@ -92,7 +92,7 @@ const STRINGS = {
     instructions_read:     "Veuillez lire attentivement les consignes avant de commencer.",
     instructions_warning:  "⚠️ Cette tâche doit être réalisée sur un <b>ordinateur portable ou de bureau</b>. Merci de ne pas utiliser un téléphone ou une tablette.",
     instructions_li1:      "Vous verrez une série de <b>taches d'encre</b>.",
-    instructions_li2:      "Vous devez décider si chaque tache vous semble <b style=\"color:#7CFF9E;\">Agréable</b> ou <b style=\"color:#FF8A8A;\">Désagréable</b>.",
+    instructions_li2:      "Vous devez décider si chaque tache vous semble <b>Agréable</b> ou <b>Désagréable</b>.",
     instructions_li3:      "Répondez selon votre <b>première impression</b>.",
     instructions_li4:      "Répondez naturellement.",
 
@@ -374,7 +374,7 @@ const response = {
   stimulus: `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;"></div>`,
   choices: () => [t("resp_pleasant"), t("resp_unpleasant")],
   button_html: (choice, i) =>
-    `<button style="font-size:18px; padding:14px 36px; border-radius:10px; border:none; cursor:pointer; background:${i === 0 ? '#2ecc71' : '#e74c3c'}; color:white; font-weight:bold; margin:0 12px;">${choice}</button>`,
+    `<button style="font-size:18px; padding:14px 36px; border-radius:10px; border:black solid 2px; cursor:pointer; color:black; font-weight:bold; margin:0 12px;">${choice}</button>`,
   data: {
     prime_category: jsPsych.timelineVariable('category'),
     prime_image: jsPsych.timelineVariable('prime')
@@ -392,7 +392,7 @@ const amp_trial = {
 //  Build stimuli
 // ─────────────────────────────────────────────
 const stimuli = [];
-for (let i = 1; i <= 30; i++) {
+for (let i = 1; i <= 1; i++) {
   stimuli.push({
     prime: `assets/Chien/Chien1.${i}.png`,
     category: "dog",
