@@ -385,8 +385,8 @@ const response = {
 };
 
 const amp_trial = {
-  timeline: [fixation, blank750, prime, mask, blank75, inkblot, response]
-};
+  timeline: [fixation, blank750, prime, blank75, inkblot, mask, response]
+}; 
 
 // ─────────────────────────────────────────────
 //  Build stimuli
