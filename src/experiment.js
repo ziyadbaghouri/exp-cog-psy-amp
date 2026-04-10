@@ -22,7 +22,7 @@ const STRINGS = {
     instructions_read:     "Please read the instructions carefully before starting.",
     instructions_warning:  "⚠️ This task must be completed on a <b>laptop or desktop computer</b>. Please do not use a phone or tablet.",
     instructions_li1:      "You will see a series of <b>inkblots</b>.",
-    instructions_li2:      "You have to decide whether each inkblot looks <b style=\"color:#7CFF9E;\">Pleasant</b> or <b style=\"color:#FF8A8A;\">Unpleasant</b>.",
+    instructions_li2:      "You have to decide whether each inkblot looks <b>Pleasant</b> or <b>Unpleasant</b>.",
     instructions_li3:      "Respond based on your <b>first impression</b>.",
     instructions_li4:      "Respond naturally.",
 
@@ -369,12 +369,16 @@ const inkblot = {
   trial_duration: 250
 };
 
-const response = {
+const maskResponse = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;"></div>`,
+  css_classes: ['mask-response-trial'],
+  stimulus: `
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:80vh;">
+      <img src="assets/mask.png" class="mask-image" style="max-height:60vh; width:auto; object-fit:contain;">
+    </div>`,
   choices: () => [t("resp_pleasant"), t("resp_unpleasant")],
   button_html: (choice, i) =>
-    `<button style="font-size:18px; padding:14px 36px; border-radius:10px; border:black solid 2px; cursor:pointer; color:black; font-weight:bold; margin:0 12px;">${choice}</button>`,
+    `<button style="font-size:18px; padding:14px 36px; border-radius:10px; border:black solid 2px; cursor:pointer; color:black; font-weight:bold; margin:0 12px; display:block; margin-left:auto; margin-right:auto;">${choice}</button>`,
   data: {
     prime_category: jsPsych.timelineVariable('category'),
     prime_image: jsPsych.timelineVariable('prime')
@@ -385,7 +389,7 @@ const response = {
 };
 
 const amp_trial = {
-  timeline: [fixation, blank750, prime, blank75, inkblot, mask, response]
+  timeline: [fixation, blank750, prime, blank75, inkblot, maskResponse]
 }; 
 
 // ─────────────────────────────────────────────
