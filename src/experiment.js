@@ -13,7 +13,7 @@ const STRINGS = {
     // ── Welcome ─────────────────────────────
     welcome_title:    "Welcome",
     welcome_p1:       "Thank you for taking the time to participate in this study.",
-    welcome_duration: "The experiment takes approximately <b>20 minutes</b>. Please complete it in a quiet place where you can stay focused.",
+    welcome_duration: "The experiment takes approximately <b>8 minutes</b>. Please complete it in a quiet place where you can stay focused.",
     welcome_anon:     "All responses are <b>fully anonymous</b> and will only be used for academic research.",
     welcome_consent:  "I am <b>18 years or older</b> and I voluntarily agree to participate in this study.",
 
@@ -83,7 +83,7 @@ const STRINGS = {
     // ── Welcome ─────────────────────────────
     welcome_title:    "Bienvenue",
     welcome_p1:       "Merci de prendre le temps de participer à cette étude.",
-    welcome_duration: "L'expérience dure environ <b>20 minutes</b>. Merci de la réaliser dans un endroit calme où vous pouvez rester concentré(e).",
+    welcome_duration: "L'expérience dure environ <b>8 minutes</b>. Merci de la réaliser dans un endroit calme où vous pouvez rester concentré(e).",
     welcome_anon:     "Toutes vos réponses sont <b>entièrement anonymes</b> et ne seront utilisées qu'à des fins de recherche académique.",
     welcome_consent:  "J'ai <b>18 ans ou plus</b> et j'accepte volontairement de participer à cette étude.",
 
