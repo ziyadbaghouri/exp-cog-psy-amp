@@ -507,7 +507,7 @@ const questionnaire = {
 
     </div>
   `,
-  button_label: "Submit / Envoyer",
+  button_label: "Next / Suivant",
   on_load: function() {
     document.getElementById("q-title").innerHTML     = t("q_title");
     document.getElementById("q-age").innerHTML       = t("q_age");
