@@ -1,38 +1,172 @@
-# Assessing Implicit Attitudes Toward Wolves  
-## An Online Affective Misattribution Procedure (AMP) Experiment
+# Implicit Attitudes Toward Wolves — AMP Experiment
 
-This repository contains the materials and code for an online implementation of the Affective Misattribution Procedure (AMP) designed to assess implicit attitudes toward wolves, dogs, and foxes.
+**An online Affective Misattribution Procedure (AMP) assessing implicit attitudes toward wolves, dogs, and foxes**
 
-The project is developed as part of:
-
-**HUM-403 – Experimental Cognitive Psychology**  
-École Polytechnique Fédérale de Lausanne (EPFL)  
-Instructor: Dr. Domicele Jonauskaite  
+> HUM-403 · Experimental Cognitive Psychology · EPFL  
+> Supervisor: Dr. Domicele Jonauskaite
 
 ---
 
-##  Overview
+## Overview
 
-This experiment investigates whether culturally entrenched stereotypes of wolves produce measurable implicit biases.
+This repository contains all materials for an online behavioral experiment investigating whether culturally entrenched stereotypes of wolves produce measurable implicit biases.
 
-Using the Affective Misattribution Procedure (AMP), participants:
+Using the **Affective Misattribution Procedure** (Payne et al., 2005), participants view a briefly flashed animal prime (wolf, dog, or fox) and then rate a neutral inkblot as *pleasant* or *unpleasant*. If the prime transfers affective valence to the inkblot, systematic differences in "pleasant" response rates across animal categories reveal implicit attitudes that bypass conscious reflection.
 
-1. View a briefly presented animal prime (wolf, dog, fox, or control image)
-2. Evaluate a neutral inkblot as "pleasant" or "unpleasant"
-3. Repeat across multiple randomized trials
-
-The primary outcome variable is the proportion of "pleasant" responses as a function of prime category.
+The experiment is fully bilingual (English / French), runs entirely in the browser, and is deployed on [Pavlovia](https://pavlovia.org).
 
 ---
 
-##  Theoretical Background
+## Hypotheses
 
-Implicit attitudes are automatic evaluations that occur outside conscious awareness (Greenwald & Banaji, 1995).  
+| Prime | Predicted direction |
+|-------|---------------------|
+| Dog   | Highest proportion of "pleasant" responses |
+| Fox   | Intermediate |
+| Wolf  | Lowest proportion of "pleasant" responses |
 
-The AMP (Payne et al., 2005) measures affective misattribution by testing whether emotion elicited by a prime influences evaluation of a neutral target.
+---
 
-We test whether:
-- Dog primes → highest pleasant responses
-- Wolf primes → lowest pleasant responses
-- Fox primes → intermediate responses
+## Experimental Design
+
+### Procedure (per trial)
+
+```
+Fixation cross (500–1000 ms, jittered)
+       ↓
+Blank screen (750 ms)
+       ↓
+Animal prime image (100 ms)
+       ↓
+Blank screen (125 ms)
+       ↓
+Inkblot (250 ms)
+       ↓
+Mask + Pleasant / Unpleasant response (self-paced)
+```
+
+### Stimuli
+
+| Category | Folder | N images |
+|----------|--------|----------|
+| Dog (*Chien*) | `assets/Chien/` | 30 |
+| Wolf (*Loup*) | `assets/Loup/` | 30 |
+| Fox (*Renard*) | `assets/Renard/` | 30 |
+| Inkblots | `assets/inkblot/` | 30 |
+
+- **Total trials**: 90 (30 per animal category), fully randomized
+- **Block structure**: 3 blocks of 30 trials with optional rest breaks between blocks
+
+### Measures
+
+**Primary outcome**: proportion of "pleasant" responses per prime category
+
+**Post-experiment questionnaire** (collected after the AMP trials):
+- Age, gender
+- Explicit attitude toward wolves, dogs, and foxes (7-point scale)
+- Dog ownership (yes / no)
+
+---
+
+## Repository Structure
+
+```
+amp/
+├── index.html               # Entry point
+├── src/
+│   └── experiment.js        # Full jsPsych experiment logic + i18n
+├── styles/
+│   └── style.css            # Custom styling
+├── assets/
+│   ├── background.mp4       # Looping video background
+│   ├── mask.png             # Visual mask
+│   ├── Chien/               # Dog prime images (30)
+│   ├── Loup/                # Wolf prime images (30)
+│   ├── Renard/              # Fox prime images (30)
+│   └── inkblot/             # Inkblot target images (30)
+└── jspsych/
+    └── jspsych/             # jsPsych v7 library + plugins
+```
+
+---
+
+## Running Locally
+
+No build step is required — the experiment is plain HTML + JavaScript.
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ziyadbaghouri/exp-cog-psy-amp.git
+   cd exp-cog-psy-amp
+   ```
+
+2. Serve the directory with any local HTTP server (direct `file://` opening will block asset loading in most browsers):
+   ```bash
+   # Python 3
+   python -m http.server 8000
+
+   # Node.js (npx)
+   npx serve .
+   ```
+
+3. Open `http://localhost:8000` in your browser.
+
+> **Note**: A laptop or desktop browser is required. The experiment is not optimized for mobile or tablet.
+
+---
+
+## Deployment (Pavlovia)
+
+The experiment is configured for deployment on [Pavlovia](https://pavlovia.org).
+
+1. Push the repository to the GitLab instance at `https://gitlab.pavlovia.org`.
+2. In Pavlovia's dashboard, set the study status to **Running**.
+3. Share the generated participant URL.
+
+Data are automatically submitted to a Google Sheet via a Google Apps Script endpoint (`on_finish` callback in `src/experiment.js`).
+
+---
+
+## Data Output
+
+Each participant submission includes the following fields:
+
+| Field | Description |
+|-------|-------------|
+| `participant_id` | Random 8-character ID (generated by jsPsych) |
+| `age` | Self-reported age |
+| `gender` | Self-reported gender |
+| `wolf_attitude` | Explicit wolf attitude (1–7) |
+| `dog_attitude` | Explicit dog attitude (1–7) |
+| `fox_attitude` | Explicit fox attitude (1–7) |
+| `dog_owner` | Whether participant owns a dog |
+| `Chien1.X` … `Loup1.X` … `Renard1.X` | Per-image response: `P` (pleasant) or `U` (unpleasant) |
+
+---
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Experiment framework | [jsPsych v7](https://www.jspsych.org/) |
+| Scripting | Vanilla JavaScript (ES6+) |
+| Styling | CSS3 |
+| Data collection | Google Apps Script → Google Sheets |
+| Hosting | [Pavlovia](https://pavlovia.org) |
+| Internationalization | Built-in i18n dictionary (English / French) |
+
+---
+
+## References
+
+- Payne, B. K., Cheng, C. M., Govorun, O., & Stewart, B. D. (2005). An inkblot for attitudes: Affect misattribution as implicit measurement. *Journal of Personality and Social Psychology, 89*(3), 277–293. https://doi.org/10.1037/0022-3514.89.3.277
+- Greenwald, A. G., & Banaji, M. R. (1995). Implicit social cognition: Attitudes, self-esteem, and stereotypes. *Psychological Review, 102*(1), 4–27. https://doi.org/10.1037/0033-295X.102.1.4
+- de Leeuw, J. R. (2015). jsPsych: A JavaScript library for creating behavioral experiments in a web browser. *Behavior Research Methods, 47*, 1–12. https://doi.org/10.3758/s13428-014-0458-y
+
+---
+
+## Contact
+
+For questions about this study: **mael.theubet@unil.ch**
+
 
