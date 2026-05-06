@@ -231,7 +231,7 @@ Each participant's submission contains:
 | Ziyad Baghouri | EPFL |
 | Paco Mahue | EPFL |
 | Lorenzo Bonazzi | EPFL |
-| Jeseph Prieur | EPFL |
+| Joseph Prieur | EPFL |
 
 ---
 
