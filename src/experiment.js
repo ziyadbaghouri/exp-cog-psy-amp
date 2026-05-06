@@ -242,7 +242,8 @@ const language_choice = {
       <source src="assets/background.mp4" type="video/mp4">
     </video>
     <div class="welcome-box">
-      <h3>${t("lang_prompt")}</h3>
+      <div class="exp-badge">HUM-403 &middot; EPFL</div>
+      <h2>${t("lang_prompt")}</h2>
     </div>
   `,
   choices: ["English", "Français"],
@@ -263,13 +264,14 @@ const welcome = {
       <source src="assets/background.mp4" type="video/mp4">
     </video>
     <div class="welcome-box">
+      <div class="exp-badge">HUM-403 &middot; EPFL</div>
       <h1>${t("welcome_title")}</h1>
       <p>${t("welcome_p1")}</p>
       <p>${t("welcome_duration")}</p>
       <p>${t("welcome_anon")}</p>
-      <label style="display:block; margin-top:20px;">
+      <label class="consent-area">
         <input type="checkbox" id="consent-check">
-        ${t("welcome_consent")}
+        <span>${t("welcome_consent")}</span>
       </label>
     </div>
   `,
@@ -298,8 +300,8 @@ const instructions = {
     <div class="welcome-box">
       <h1>${t("instructions_title")}</h1>
       <p>${t("instructions_read")}</p>
-      <p style="color:#FFD580; margin-top:10px;">${t("instructions_warning")}</p>
-      <ul style="text-align:left; line-height:1.8; margin-top:20px;">
+      <div class="warning-banner">${t("instructions_warning")}</div>
+      <ul class="instructions-list">
         <li>${t("instructions_li1")}</li>
         <li>${t("instructions_li2")}</li>
         <li>${t("instructions_li3")}</li>
@@ -372,13 +374,9 @@ const inkblot = {
 const maskResponse = {
   type: jsPsychHtmlButtonResponse,
   css_classes: ['mask-response-trial'],
-  stimulus: `
-    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:80vh;">
-      <img src="assets/mask.png" class="mask-image" style="max-height:60vh; width:auto; object-fit:contain;">
-    </div>`,
+  stimulus: `<div class="amp-container"><img src="assets/mask.png" class="mask-image"></div>`,
   choices: () => [t("resp_pleasant"), t("resp_unpleasant")],
-  button_html: (choice, i) =>
-    `<button style="font-size:18px; padding:14px 36px; border-radius:10px; border:black solid 2px; cursor:pointer; color:black; font-weight:bold; margin:0 12px; display:block; margin-left:auto; margin-right:auto;">${choice}</button>`,
+  button_html: (choice) => `<button class="amp-response-btn">${choice}</button>`,
   data: {
     prime_category: jsPsych.timelineVariable('category'),
     prime_image: jsPsych.timelineVariable('prime')
@@ -421,7 +419,14 @@ const shuffled_trials = jsPsych.randomization.shuffle(stimuli);
 // ─────────────────────────────────────────────
 const break_screen = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: () => t("break_msg"),
+  stimulus: () => `
+    <div class="break-container">
+      <div class="break-box">
+        ${t("break_msg")}
+        <p>${lang === "fr" ? "Prenez votre temps avant de continuer." : "Take your time before continuing."}</p>
+      </div>
+    </div>
+  `,
   choices: () => [t("break_continue")]
 };
 
@@ -446,7 +451,7 @@ const questionnaire = {
     <video autoplay muted loop id="bg-video">
       <source src="assets/background.mp4" type="video/mp4">
     </video>
-    <div class="questionnaire" style="text-align:left;">
+    <div class="questionnaire">
 
       <h2 id="q-title"></h2>
 
@@ -548,12 +553,15 @@ const debrief = {
       <source src="assets/background.mp4" type="video/mp4">
     </video>
     <div class="welcome-box">
+      <div class="exp-badge">${lang === "fr" ? "Étude terminée" : "Study Complete"}</div>
       <h1>${t("debrief_title")}</h1>
       <p>${t("debrief_recorded")}</p>
-      <h3 style="margin-top:25px;">${t("debrief_about")}</h3>
-      <p style="text-align:left; line-height:1.6;">${t("debrief_body")}</p>
-      <p style="text-align:left; line-height:1.6;">${t("debrief_amp")}</p>
-      <h3 style="margin-top:25px;">${t("debrief_contact")}</h3>
+      <hr class="divider">
+      <h3>${t("debrief_about")}</h3>
+      <p>${t("debrief_body")}</p>
+      <p>${t("debrief_amp")}</p>
+      <hr class="divider">
+      <h3>${t("debrief_contact")}</h3>
       <p>${t("debrief_email")}</p>
     </div>
   `,
