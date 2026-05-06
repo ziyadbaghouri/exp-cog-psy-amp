@@ -224,6 +224,17 @@ Each participant's submission contains:
 
 ---
 
+## Contributors
+
+| Name | Institution |
+|------|-------------|
+| Ziyad Baghouri | EPFL |
+| Paco Mahue | EPFL |
+| Lorenzo Bonazzi | EPFL |
+| Jeseph Prieur | EPFL |
+
+---
+
 ## Contact
 
 For questions about this study: **mael.theubet@unil.ch**
