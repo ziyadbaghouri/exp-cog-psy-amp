@@ -154,53 +154,7 @@ function t(key) {
 // ─────────────────────────────────────────────
 //  jsPsych init
 // ─────────────────────────────────────────────
-const jsPsych = initJsPsych({
-  on_finish: function() {
-
-    const allTrials = jsPsych.data.get().values();
-    console.log("ALL TRIALS:", allTrials);
-
-    const demo = jsPsych.data.get().filter({trial_type: "survey-html-form"}).values()[0];
-    console.log("DEMO:", demo);
-
-    const amp_responses = jsPsych.data.get().filter({trial_type: "html-button-response"})
-      .values()
-      .filter(trial => trial.prime_category !== undefined && trial.prime_image !== undefined);
-    console.log("AMP RESPONSES:", amp_responses);
-
-    if (!demo) {
-      console.error("demo is undefined - questionnaire trial not found");
-      return;
-    }
-
-    const image_columns = {};
-    for (const trial of amp_responses) {
-      const key = trial.prime_image;
-      const value = trial.response === 0 ? "P" : "U";
-      image_columns[key] = value;
-    }
-
-    const payload = {
-      participant_id: participant_id,
-      age: demo.response.age,
-      gender: demo.response.gender,
-      wolf_attitude: demo.response.att_wolf,
-      dog_attitude: demo.response.att_dog,
-      fox_attitude: demo.response.att_fox,
-      dog_owner: demo.response.dog_owner,
-      ...image_columns
-    };
-
-    console.log("PAYLOAD:", payload);
-
-    fetch("https://script.google.com/macros/s/AKfycbzTdvxPABMPYrvuQkfs7SuRc7fJxwUqWuDaIQ7gN4fSiSASGJyEj4lGr7kxcLFHsTg/exec", {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify(payload)
-    });
-  }
-});
+const jsPsych = initJsPsych({});
 
 const participant_id = jsPsych.randomization.randomID(8);
 jsPsych.data.addProperties({ participant_id: participant_id });
@@ -238,9 +192,6 @@ timeline.push(preload);
 const language_choice = {
   type: jsPsychHtmlButtonResponse,
   stimulus: () => `
-    <video autoplay muted loop id="bg-video">
-      <source src="assets/background.mp4" type="video/mp4">
-    </video>
     <div class="welcome-box">
       <div class="exp-badge">HUM-403 &middot; EPFL</div>
       <h2>${t("lang_prompt")}</h2>
@@ -260,9 +211,6 @@ timeline.push(language_choice);
 const welcome = {
   type: jsPsychHtmlButtonResponse,
   stimulus: () => `
-    <video autoplay muted loop id="bg-video">
-      <source src="assets/background.mp4" type="video/mp4">
-    </video>
     <div class="welcome-box">
       <div class="exp-badge">HUM-403 &middot; EPFL</div>
       <h1>${t("welcome_title")}</h1>
@@ -294,9 +242,6 @@ timeline.push(welcome);
 const instructions = {
   type: jsPsychHtmlButtonResponse,
   stimulus: () => `
-    <video autoplay muted loop id="bg-video">
-      <source src="assets/background.mp4" type="video/mp4">
-    </video>
     <div class="welcome-box">
       <h1>${t("instructions_title")}</h1>
       <p>${t("instructions_read")}</p>
@@ -427,7 +372,12 @@ const break_screen = {
       </div>
     </div>
   `,
-  choices: () => [t("break_continue")]
+  choices: () => [t("break_continue")],
+  on_load: () => {
+    const box = document.querySelector('.break-box');
+    const btnGroup = document.getElementById('jspsych-html-button-response-btngroup');
+    if (box && btnGroup) box.appendChild(btnGroup);
+  }
 };
 
 // ─────────────────────────────────────────────
@@ -448,9 +398,6 @@ for (let i = 0; i < shuffled_trials.length; i += chunk_size) {
 const questionnaire = {
   type: jsPsychSurveyHtmlForm,
   html: `
-    <video autoplay muted loop id="bg-video">
-      <source src="assets/background.mp4" type="video/mp4">
-    </video>
     <div class="questionnaire">
 
       <h2 id="q-title"></h2>
@@ -459,12 +406,13 @@ const questionnaire = {
         <input name="age" type="number" min="18" max="100" required>
       </p>
 
-      <p><span id="q-gender"></span><br>
-        <label><input type="radio" name="gender" value="female" required> <span id="q-g-female"></span></label><br>
-        <label><input type="radio" name="gender" value="male"> <span id="q-g-male"></span></label><br>
-        <label><input type="radio" name="gender" value="nonbinary"> <span id="q-g-nonbinary"></span></label><br>
-        <label><input type="radio" name="gender" value="prefer_not"> <span id="q-g-prefer"></span></label>
-      </p>
+      <p><span id="q-gender"></span></p>
+      <div class="tab-group">
+        <label><input type="radio" name="gender" value="female" required><span id="q-g-female"></span></label>
+        <label><input type="radio" name="gender" value="male"><span id="q-g-male"></span></label>
+        <label><input type="radio" name="gender" value="nonbinary"><span id="q-g-nonbinary"></span></label>
+        <label><input type="radio" name="gender" value="prefer_not"><span id="q-g-prefer"></span></label>
+      </div>
 
       <p><span id="q-wolf"></span><br>
         <select name="att_wolf" required>
@@ -505,15 +453,23 @@ const questionnaire = {
         </select>
       </p>
 
-      <p><span id="q-dog-owner"></span><br>
-        <label><input type="radio" name="dog_owner" value="yes" required> <span id="q-yes"></span></label>
-        <label><input type="radio" name="dog_owner" value="no"> <span id="q-no"></span></label>
-      </p>
+      <p><span id="q-dog-owner"></span></p>
+      <div class="tab-group">
+        <label><input type="radio" name="dog_owner" value="yes" required><span id="q-yes"></span></label>
+        <label><input type="radio" name="dog_owner" value="no"><span id="q-no"></span></label>
+      </div>
 
     </div>
   `,
   button_label: "Next / Suivant",
   on_load: function() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    const qDiv = document.querySelector('.questionnaire');
+    const submitBtn = document.getElementById('jspsych-survey-html-form-next');
+    if (qDiv && submitBtn) {
+      qDiv.appendChild(submitBtn);
+      submitBtn.value = lang === "fr" ? "Suivant" : "Next";
+    }
     document.getElementById("q-title").innerHTML     = t("q_title");
     document.getElementById("q-age").innerHTML       = t("q_age");
     document.getElementById("q-gender").innerHTML    = t("q_gender");
@@ -537,8 +493,35 @@ const questionnaire = {
       });
     });
   },
-  on_finish: () => {
+  on_finish: function(data) {
     if (document.fullscreenElement) document.exitFullscreen();
+
+    const amp_responses = jsPsych.data.get().filter({trial_type: "html-button-response"})
+      .values()
+      .filter(trial => trial.prime_category !== undefined && trial.prime_image !== undefined);
+
+    const image_columns = {};
+    for (const trial of amp_responses) {
+      image_columns[trial.prime_image] = trial.response === 0 ? "P" : "U";
+    }
+
+    const payload = {
+      participant_id: participant_id,
+      age: data.response.age,
+      gender: data.response.gender,
+      wolf_attitude: data.response.att_wolf,
+      dog_attitude: data.response.att_dog,
+      fox_attitude: data.response.att_fox,
+      dog_owner: data.response.dog_owner,
+      ...image_columns
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbzTdvxPABMPYrvuQkfs7SuRc7fJxwUqWuDaIQ7gN4fSiSASGJyEj4lGr7kxcLFHsTg/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify(payload)
+    });
   }
 };
 timeline.push(questionnaire);
@@ -547,25 +530,22 @@ timeline.push(questionnaire);
 //  Debrief
 // ─────────────────────────────────────────────
 const debrief = {
-  type: jsPsychHtmlButtonResponse,
+  type: jsPsychHtmlKeyboardResponse,
   stimulus: () => `
-    <video autoplay muted loop id="bg-video">
-      <source src="assets/background.mp4" type="video/mp4">
-    </video>
     <div class="welcome-box">
       <div class="exp-badge">${lang === "fr" ? "Étude terminée" : "Study Complete"}</div>
       <h1>${t("debrief_title")}</h1>
       <p>${t("debrief_recorded")}</p>
       <hr class="divider">
-      <h3>${t("debrief_about")}</h3>
-      <p>${t("debrief_body")}</p>
       <p>${t("debrief_amp")}</p>
-      <hr class="divider">
-      <h3>${t("debrief_contact")}</h3>
       <p>${t("debrief_email")}</p>
+      <hr class="divider">
+      <p style="font-weight:600; text-align:center;">
+        ${lang === "fr" ? "Vous pouvez fermer cet onglet." : "You may now close this tab."}
+      </p>
     </div>
   `,
-  choices: () => [lang === "fr" ? "Terminer" : "Finish"]
+  choices: "NO_KEYS"
 };
 
 timeline.push(debrief);
