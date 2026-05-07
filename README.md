@@ -135,8 +135,8 @@ No build step required — the experiment is plain HTML + JavaScript.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ziyadbaghouri/exp-cog-psy-amp.git
-   cd exp-cog-psy-amp
+   git clone https://github.com/ziyadbaghouri/wolf-implicit-bias-amp.git
+   cd wolf-implicit-bias-amp
    ```
 
 2. Serve via a local HTTP server (direct `file://` will block asset loading in most browsers):
